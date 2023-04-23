@@ -2,7 +2,7 @@
 API_KEY = "sk-此处填API密钥"    # 可同时填写多个API-KEY，用英文逗号分割，例如API_KEY = "sk-openaikey1,sk-openaikey2,fkxxxx-api2dkey1,fkxxxx-api2dkey2"
 
 # [step 2]>> 改为True应用代理，如果直接在海外服务器部署，此处不修改
-USE_PROXY = False
+USE_PROXY = True
 if USE_PROXY:
     # 填写格式是 [协议]://  [地址] :[端口]，填写之前不要忘记把USE_PROXY改成True，如果直接在海外服务器部署，此处不修改
     # 例如    "socks5h://localhost:11284"
@@ -13,8 +13,8 @@ if USE_PROXY:
     # 代理网络的地址，打开你的科学上网软件查看代理的协议(socks5/http)、地址(localhost)和端口(11284)
     proxies = {
         #          [协议]://  [地址]  :[端口]
-        "http":  "socks5h://localhost:11284",
-        "https": "socks5h://localhost:11284",
+        "http": "http://10.144.1.10:8080",
+        "https": "https://10.144.1.10:8080",
     }
 else:
     proxies = None
