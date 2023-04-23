@@ -68,4 +68,18 @@ def get_core_functions():
             "Prefix":   r"请解释以下代码：" + "\n```\n",
             "Suffix":   "\n```\n",
         },
+        "Innovation Idea creation":{
+            "Prefix":   r"I would like you to act as an innovation specialist. " + 
+                        r"I will share with you my draft idea and you will provide a structured analytic report for all subjects below" + 
+                        r", one bullet for one point, with a minimum of 400 words. Please provide the report in English.""\n" +
+		                r"0. Title: Please provide a summary of the idea in 15 words or less.""\n" +
+		                r"1. Innovation Point: Compare the idea to existing methods and describe the normal process. Include at least two points of comparison.""\n" +
+		                r"2. Background: Describe at least two problems that this idea can resolve.""\n" +
+		                r"3. Benefits and Impact Scope: Quantify the value of the idea based on hypothesis, and provide at least three points of impact." + 
+                        r"Identify user scenarios to illustrate the scope of impact.""\n" +
+		                r"4. Solution Introduction: Provide a detailed explanation of how the idea can be implemented, including a feasibility assessment.""\n" +
+		                r"The first idea I would like to propose is: ." +
+                        r"" + "\n\n",
+            "Suffix":   r"",
+        },
     }
