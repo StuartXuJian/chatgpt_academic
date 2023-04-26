@@ -14,7 +14,7 @@ def main():
 
     from check_proxy import get_current_version
     initial_prompt = "Serve me as a writing and programming assistant."
-    title_html = f"<h1 align=\"center\">ChatGPT 工作利器 {get_current_version()}</h1><h3 align=\"center\" style=\"font-weight: bold; color: yellow;\">免责申明：一定不要输入任何公司私有信息，工具提供者不承担任何安全泄露责任</h3>"
+    title_html = f"<h1 align=\"center\">ChatGPT 工作利器 {get_current_version()}</h1><h3 align=\"center\" style=\"font-weight: bold; color: red;\">免责申明：一定不要输入任何公司私有信息，工具提供者不承担任何安全泄露责任</h3>"
     #description =  """代码开源和更新[地址🚀](https://github.com/binary-husky/chatgpt_academic)，感谢热情的[开发者们❤️](https://github.com/binary-husky/chatgpt_academic/graphs/contributors)"""
     description = "感谢开源社区"
 
@@ -77,7 +77,7 @@ def main():
                         for k in functional:
                             variant = functional[k]["Color"] if "Color" in functional[k] else "secondary"
                             functional[k]["Button"] = gr.Button(k, variant=variant)
-                with gr.Accordion("函数插件区", open=True) as area_crazy_fn:
+                with gr.Accordion("函数插件区", open=False) as area_crazy_fn:
                     with gr.Row():
                         gr.Markdown("注意：以下“红颜色”标识的函数插件需从输入区读取路径作为参数.")
                     with gr.Row():

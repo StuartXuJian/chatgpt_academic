@@ -14,3 +14,4 @@ pymupdf
 openai
 numpy
 arxiv
+urllib3==1.25.11
