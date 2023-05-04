@@ -68,7 +68,40 @@ def get_core_functions():
             "Prefix":   r"请解释以下代码：" + "\n```\n",
             "Suffix":   "\n```\n",
         },
-        "Innovation Structure":{
+        "RCA": {
+            "Prefix":   r"I would like you to act as an RCA (root cause analysis) facilitator and guide me step by step," +
+                        r"until I have found the root cause and preventive action. " +  
+                        r"I would like you to speak in Chinese, and wait for my answer after one step asking." +
+                        r"I expect your question if you don't think my answer is reasonable. " +  
+                        r"I need you act in below steps, step by step, start since step 2:""\n" +
+		                r"{Step 1}: I will state the {problem} in this message.""\n" +
+		                r"{Step 2}: You ask me: \"Why did the problem occur of {problem}?\" and wait for my answer.""\n" +
+		                r"{Step 3}: Once I've come up with a potential reason, you ask \"why you have made that happen?\" and wait for my answer.""\n" +
+		                r"{Step 4}: Repeat {Step 3} again and again until the problem has been located in development process, tool or people issue which we can improve.""\n" + 
+                        r"{Step 5}: I will answer if I have the idea to improve and avoid similar case," + 
+                        r"and you will go to {step 3} if I don't have good idea, or provide some long-term preventive suggestion by changing the process," + 
+                        r"or provide some long-term preventive suggestion by changing the process," + 
+                        r"instead of resolving the problem this time only, if I have already some ideas.""\n" +
+                        r"{Step 6}: You summary the preventive action list we have agreed.""\n" +
+		                r"The {problem} in {Step 1} I would like to state is:" +
+                        r"" + "\n\n",
+            "Suffix":   r"",
+        },
+        # "EDA": {
+        #     "Prefix":   r"I would like you to act as an innovation specialist. " + 
+        #                 r"I will share with you my draft idea and you will provide a structured analytic report for all subjects below" + 
+        #                 r", one bullet for one point, with a minimum of 400 words. Please provide the report in English.""\n" +
+		#                 r"0. Title: Please provide a summary of the idea in 15 words or less.""\n" +
+		#                 r"1. Innovation Point: Compare the idea to existing methods and describe the normal process. Include at least two points of comparison.""\n" +
+		#                 r"2. Background: Describe at least two problems that this idea can resolve.""\n" +
+		#                 r"3. Benefits and Impact Scope: Quantify the value of the idea based on hypothesis, and provide at least three points of impact." + 
+        #                 r"Identify user scenarios to illustrate the scope of impact.""\n" +
+		#                 r"4. Solution Introduction: Provide a detailed explanation of how the idea can be implemented, including a feasibility assessment.""\n" +
+		#                 r"The first idea I would like to propose is:" +
+        #                 r"" + "\n\n",
+        #     "Suffix":   r"",
+        # },
+        "Innovation idea":{
             "Prefix":   r"I would like you to act as an innovation specialist. " + 
                         r"I will share with you my draft idea and you will provide a structured analytic report for all subjects below" + 
                         r", one bullet for one point, with a minimum of 400 words. Please provide the report in English.""\n" +
@@ -78,7 +111,7 @@ def get_core_functions():
 		                r"3. Benefits and Impact Scope: Quantify the value of the idea based on hypothesis, and provide at least three points of impact." + 
                         r"Identify user scenarios to illustrate the scope of impact.""\n" +
 		                r"4. Solution Introduction: Provide a detailed explanation of how the idea can be implemented, including a feasibility assessment.""\n" +
-		                r"The first idea I would like to propose is: ." +
+		                r"The first idea I would like to propose is:" +
                         r"" + "\n\n",
             "Suffix":   r"",
         },
