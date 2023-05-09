@@ -122,20 +122,48 @@ def main():
                             clearBtn2 = gr.Button("清除", variant="secondary", visible=False); clearBtn2.style(size="sm")
         with gr.Tab("新功能试验区"):   
             with gr.Row():
+                with gr.Column():
+                    gr.Markdown(f"生成图提示词：")
+                    txt2img_txt = gr.Textbox(show_label=False, placeholder="Input for image generation.", label="img_prompt").style(container=False)
+                
+            with gr.Row():
                 image_input_a = gr.Image()
                 image_output_a = gr.Image()
-            image_button = gr.Button("翻转图片")
 
             with gr.Row():
-                with gr.Column(scale=1, min_width=600):
-                    gr.Markdown(f"布局测试")
+                flip_button = gr.Button("翻转图片")
+                text2img_button = gr.Button("文字生图")
+                img2img_button = gr.Button("图片变幻")
+
 
             
-        #新区互动按钮
+        #新试验区互动按钮
         import numpy as np
-        def flip_image(x):
-            return np.fliplr(x)
-        image_button.click(flip_image, inputs=image_input_a, outputs=image_output_a)
+        flip_button.click(lambda x: np.fliplr(x), inputs=image_input_a, outputs=image_output_a)
+
+        import openai
+        def text2img(prompt_input):
+            openai.api_key = API_KEY
+            if prompt_input:
+                return openai.Image.create(
+                            prompt=prompt_input,
+                            n=1,
+                            size="1024x1024"
+                            )
+            else:
+                return None
+        def img2img(img_input):
+            openai.api_key = API_KEY
+            if img_input:
+                return openai.Image.create_variation(
+                            image=img_input,
+                            n=1,
+                            size="1024x1024"
+                            )
+            else:
+                return None
+        text2img_button.click(text2img, inputs=txt2img_txt, outputs=image_output_a)
+        img2img_button.click(img2img, inputs=image_input_a, outputs=image_output_a)
 
         # 功能区显示开关与功能区的互动
         def fn_area_visibility(a):

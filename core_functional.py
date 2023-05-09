@@ -84,8 +84,8 @@ def get_core_functions():
                         r"instead of resolving the problem this time only, if I have already some ideas.""\n" +
                         r"{Step 6}: You summary the preventive action list we have agreed.""\n" +
 		                r"The {problem} in {Step 1} I would like to state is:" +
-                        r"" + "\n\n",
-            "Suffix":   r"",
+                        r"\"\"\"" + "\n\n",
+            "Suffix":   r"\"\"\"",
         },
         # "EDA": {
         #     "Prefix":   r"I would like you to act as an innovation specialist. " + 
@@ -112,7 +112,7 @@ def get_core_functions():
                         r"Identify user scenarios to illustrate the scope of impact.""\n" +
 		                r"4. Solution Introduction: Provide a detailed explanation of how the idea can be implemented, including a feasibility assessment.""\n" +
 		                r"The first idea I would like to propose is:" +
-                        r"" + "\n\n",
-            "Suffix":   r"",
+                        r"\"\"\"" + "\n\n",
+            "Suffix":   r"\"\"\"",
         },
     }
