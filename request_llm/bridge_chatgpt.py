@@ -274,4 +274,73 @@ def generate_payload(inputs, llm_kwargs, history, system_prompt, stream):
         print('输入中可能存在乱码。')
     return headers,payload
 
+from PIL import Image
+from io import BytesIO
 
+def txt2img(prompt_input, llm_kwargs):
+    if prompt_input == "":
+        return None
+    
+    endpoint = 'https://api.openai.com/v1/images/generations'
+    
+    api_key = select_api_key(llm_kwargs['api_key'], llm_kwargs['llm_model'])
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {api_key}"
+    }
+
+    # 构造请求正文
+    payload = {
+        'prompt': prompt_input,
+        'n': 1,
+        'size': '256x256'
+    }
+
+    # 发送请求
+    response = requests.post(endpoint, headers=headers, json=payload, proxies=proxies, timeout=TIMEOUT_SECONDS)
+
+    data = json.loads(response.content)
+    url = data['data'][0]['url']  # 获取第一个图像的URL
+    try:
+        image = requests.get(url, proxies=proxies)
+        img = Image.open(BytesIO(image.content))
+    except Exception as e:
+        print("Error: ", e)
+
+    return img
+
+def img2img(img_input, llm_kwargs):
+    if img_input is None:
+        return None
+    
+    endpoint = 'https://api.openai.com/v1/images/create-variation'
+
+    api_key = select_api_key(llm_kwargs['api_key'], llm_kwargs['llm_model'])
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {api_key}"
+    }
+
+    # 读取图像文件
+    with open(img_input, 'rb') as f:
+        image_bytes = f.read()
+
+    # 构造请求正文
+    payload = {
+        'image': ('image.jpg', image_bytes, 'image/jpeg'),
+        'n': 1,
+        'size': '256x256'
+    }
+
+    # 发送请求
+    response = requests.post(endpoint, headers=headers, files=payload, proxies=proxies, timeout=TIMEOUT_SECONDS)
+
+    data = json.loads(response.content)
+    url = data['data'][0]['url']  # 获取第一个图像的URL
+    try:
+        image = requests.get(url, proxies=proxies)
+        img = Image.open(BytesIO(image.content))
+    except Exception as e:
+        print("Error: ", e)
+
+    return None

@@ -134,36 +134,16 @@ def main():
                 flip_button = gr.Button("翻转图片")
                 text2img_button = gr.Button("文字生图")
                 img2img_button = gr.Button("图片变幻")
-
-
             
         #新试验区互动按钮
         import numpy as np
         flip_button.click(lambda x: np.fliplr(x), inputs=image_input_a, outputs=image_output_a)
 
-        import openai
-        def text2img(prompt_input):
-            openai.api_key = API_KEY
-            if prompt_input:
-                return openai.Image.create(
-                            prompt=prompt_input,
-                            n=1,
-                            size="1024x1024"
-                            )
-            else:
-                return None
-        def img2img(img_input):
-            openai.api_key = API_KEY
-            if img_input:
-                return openai.Image.create_variation(
-                            image=img_input,
-                            n=1,
-                            size="1024x1024"
-                            )
-            else:
-                return None
-        text2img_button.click(text2img, inputs=txt2img_txt, outputs=image_output_a)
-        img2img_button.click(img2img, inputs=image_input_a, outputs=image_output_a)
+        from request_llm.bridge_chatgpt import txt2img
+        from request_llm.bridge_chatgpt import img2img
+
+        text2img_button.click(txt2img, inputs=[txt2img_txt, cookies], outputs=image_output_a)
+        img2img_button.click(img2img, inputs=[image_input_a, cookies], outputs=image_output_a)
 
         # 功能区显示开关与功能区的互动
         def fn_area_visibility(a):
