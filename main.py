@@ -121,19 +121,18 @@ def main():
                             stopBtn2 = gr.Button("停止", variant="secondary"); stopBtn2.style(size="sm")
                             clearBtn2 = gr.Button("清除", variant="secondary", visible=False); clearBtn2.style(size="sm")
         with gr.Tab("强到没朋友的AI武器"): 
-            with gr.Row():
-                from ai_tools import AI_Tool_list
-                Tools_text = "| 工具（含链接） | 特色功能概述 | 收费情况 | 上手星级 | 补充说明 |\n|------|-----|------|-------|-------|\n"
-                for row in AI_Tool_list["data"]:
-                    Tools_text += "| [{}]({}) | {} | {} | ".format(row["Name"], row["Link"], row["Brief_Usage"], row["Charge"])
-                    for i in range(row["Stars"]):
-                        Tools_text += "&#9733;"
-                    Tools_text += " | {} |\n".format(row["Others"])
-                gr.Markdown(Tools_text)
+            from ai_tools import AI_Tool_list
+            from ai_tools import generate_md_table
+            with gr.Tab("通用"):
+                common_tools = generate_md_table("common")
+                gr.Markdown(common_tools)
+            with gr.Tab("图像处理"):
+                image_tools = generate_md_table("image")
+                gr.Markdown(image_tools)
         with gr.Tab("开发者试验田"):   
             with gr.Row():
                 with gr.Column():
-                    gr.Markdown(f"生成图提示词：")
+                    gr.Markdown(f"生成图提示词（需要先录入openAI Key）：")
                     txt2img_txt = gr.Textbox(show_label=False, placeholder="Input for image generation.", label="img_prompt").style(container=False)
                 
             with gr.Row():

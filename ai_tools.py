@@ -1,8 +1,10 @@
-#仅推荐工作相关的AI工具
+#策略：仅推荐工作相关的AI工具
+#策略：少而精，同类工具里只推荐最好用的
+
 #建议每行内容不要超过20个字
 #注意：换行不要用/n，用<br>
 AI_Tool_list = {
-        "data": [
+        "common": [
             {
                 "Name": "ChatGPT", 
                 "Link": "https://chat.openai.com/", 
@@ -36,20 +38,20 @@ AI_Tool_list = {
                 "Others": ""
             },
             {
-                "Name": "MidJourney", 
-                "Link": "https://www.midjourney.com/auth/signin/", 
-                "Brief_Usage": "目前最好的图片生成器和设计师生产力工具", 
-                "Charge": "需注册，收费使用。", 
-                "Stars": 4,  
-                "Others": "本身国内可访问,但是依赖的Discord社区需要科学上网"
-            },
-            {
                 "Name": "Notion AI", 
                 "Link": "https://www.midjourney.com/auth/signin/", 
                 "Brief_Usage": "目前最好的智能笔记本", 
                 "Charge": "需注册，免费使用。", 
                 "Stars": 5,  
                 "Others": "名校大学学霸们的首选私人notebook"
+            },
+            {
+                "Name": "Huemint", 
+                "Link": "https://huemint.com/brand-intersection/", 
+                "Brief_Usage": "智能配色工具 e.g. PBI, ppt", 
+                "Charge": "无需注册，免费使用。", 
+                "Stars": 5,  
+                "Others": ""
             },
             {
                 "Name": "GitMind", 
@@ -59,13 +61,43 @@ AI_Tool_list = {
                 "Stars": 3,  
                 "Others": ""
             },
-            {
-                "Name": "文心一格", 
-                "Link": "https://yige.baidu.com/", 
-                "Brief_Usage": "文字生成图片, e.g. PPT插图", 
-                "Charge": "可以直接用百度账号。有限免费使用额度。", 
-                "Stars": 3,  
-                "Others": ""
-            },
-        ]
+        ],
+        "image": [
+                {
+                    "Name": "MidJourney", 
+                    "Link": "https://www.midjourney.com/auth/signin/", 
+                    "Brief_Usage": "目前最好的图片生成器,设计师专属生产力工具", 
+                    "Charge": "需注册，收费使用。", 
+                    "Stars": 4,  
+                    "Others": "本身国内可访问,但是依赖的Discord社区需要科学上网"
+                },
+                {
+                    "Name": "Hama", 
+                    "Link": "https://www.hama.app/", 
+                    "Brief_Usage": "抹掉一些图上的杂物，比如水印", 
+                    "Charge": "免费使用。", 
+                    "Stars": 4,  
+                    "Others": ""
+                },
+                {
+                    "Name": "文心一格", 
+                    "Link": "https://yige.baidu.com/", 
+                    "Brief_Usage": "文字生成图片, e.g. PPT插图", 
+                    "Charge": "可以直接用百度账号。有限免费使用额度。", 
+                    "Stars": 3,  
+                    "Others": ""
+                },
+            ],
     }
+
+
+def generate_md_table(label):
+
+    Tools_text = "| 工具（链接） | 特色功能 | 收费情况 | 上手星级 | 补充说明 |\n|------|-----|------|-------|-------|\n"
+    for row in AI_Tool_list[label]:
+        Tools_text += "| [{}]({}) | {} | {} | ".format(row["Name"], row["Link"], row["Brief_Usage"], row["Charge"])
+        for i in range(row["Stars"]):
+            Tools_text += "&#9733;"
+        Tools_text += " | {} |\n".format(row["Others"])
+
+    return Tools_text
