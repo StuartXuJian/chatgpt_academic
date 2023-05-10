@@ -55,7 +55,7 @@ def main():
     with gr.Blocks(title="ChatGPT工作利器", theme=set_theme, analytics_enabled=False, css=advanced_css) as demo:
         gr.HTML(title_html)
         cookies = gr.State({'api_key': API_KEY, 'llm_model': LLM_MODEL})
-        with gr.Tab("基础功能区"):
+        with gr.Tab("成品功能区"):
             with gr_L1():
                 with gr_L2(scale=2):
                     chatbot = gr.Chatbot(label=f"当前模型：{LLM_MODEL}")
@@ -120,7 +120,17 @@ def main():
                             resetBtn2 = gr.Button("重置", variant="secondary"); resetBtn2.style(size="sm")
                             stopBtn2 = gr.Button("停止", variant="secondary"); stopBtn2.style(size="sm")
                             clearBtn2 = gr.Button("清除", variant="secondary", visible=False); clearBtn2.style(size="sm")
-        with gr.Tab("新功能试验区"):   
+        with gr.Tab("强到没朋友的AI武器"): 
+            with gr.Row():
+                from ai_tools import AI_Tool_list
+                Tools_text = "| 工具（含链接） | 特色功能概述 | 收费情况 | 上手星级 | 补充说明 |\n|------|-----|------|-------|-------|\n"
+                for row in AI_Tool_list["data"]:
+                    Tools_text += "| [{}]({}) | {} | {} | ".format(row["Name"], row["Link"], row["Brief_Usage"], row["Charge"])
+                    for i in range(row["Stars"]):
+                        Tools_text += "&#9733;"
+                    Tools_text += " | {} |\n".format(row["Others"])
+                gr.Markdown(Tools_text)
+        with gr.Tab("开发者试验田"):   
             with gr.Row():
                 with gr.Column():
                     gr.Markdown(f"生成图提示词：")
@@ -133,7 +143,7 @@ def main():
             with gr.Row():
                 flip_button = gr.Button("翻转图片")
                 text2img_button = gr.Button("文字生图")
-                img2img_button = gr.Button("图片变幻")
+                #img2img_button = gr.Button("图片变幻")
             
         #新试验区互动按钮
         import numpy as np
@@ -143,7 +153,7 @@ def main():
         from request_llm.bridge_chatgpt import img2img
 
         text2img_button.click(txt2img, inputs=[txt2img_txt, cookies], outputs=image_output_a)
-        img2img_button.click(img2img, inputs=[image_input_a, cookies], outputs=image_output_a)
+        #img2img_button.click(img2img, inputs=[image_input_a, cookies], outputs=image_output_a)
 
         # 功能区显示开关与功能区的互动
         def fn_area_visibility(a):

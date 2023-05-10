@@ -68,8 +68,8 @@ def get_core_functions():
             "Prefix":   r"请解释以下代码：" + "\n```\n",
             "Suffix":   "\n```\n",
         },
-        "RCA": {
-            "Prefix":   r"I would like you to act as an RCA (root cause analysis) facilitator and guide me step by step," +
+        "RCA引导": {
+            "Prefix":   r"I would like you to act as an RCA (root cause analysis) facilitator in the style of Socratic questioning and guide me step by step," +
                         r"until I have found the root cause and preventive action. " +  
                         r"I would like you to speak in Chinese, and wait for my answer after one step asking." +
                         r"I expect your question if you don't think my answer is reasonable. " +  
@@ -101,7 +101,7 @@ def get_core_functions():
         #                 r"" + "\n\n",
         #     "Suffix":   r"",
         # },
-        "Innovation idea":{
+        "Innovation结构化填充":{
             "Prefix":   r"I would like you to act as an innovation specialist. " + 
                         r"I will share with you my draft idea and you will provide a structured analytic report for all subjects below" + 
                         r", one bullet for one point, with a minimum of 400 words. Please provide the report in English.""\n" +
