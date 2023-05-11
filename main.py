@@ -64,7 +64,7 @@ def main():
                 with gr_L2(scale=1):
                     with gr.Accordion("输入区", open=True) as area_input_primary:
                         with gr.Row():
-                            gr.Markdown(r"[User Guide](https://confluence.ext.net.nokia.com/display/RCP/Working+tool+user+guide)")
+                            gr.Markdown(r"[使用手册](https://confluence.ext.net.nokia.com/display/RCP/Working+tool+user+guide)")
                         with gr.Row():
                             txt = gr.Textbox(show_label=False, placeholder="Input question here.").style(container=False)
                         with gr.Row():
@@ -126,7 +126,10 @@ def main():
             with gr.Tab("通用"):
                 common_tools = generate_md_table("common")
                 gr.Markdown(common_tools)
-            with gr.Tab("图像处理"):
+            with gr.Tab("文档处理"):
+                doc_tools = generate_md_table("doc")
+                gr.Markdown(doc_tools)
+            with gr.Tab("图像视频"):
                 image_tools = generate_md_table("image")
                 gr.Markdown(image_tools)
         with gr.Tab("开发者试验田"):   
