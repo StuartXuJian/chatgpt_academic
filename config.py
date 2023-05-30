@@ -14,7 +14,7 @@ if USE_PROXY:
     proxies = {
         #          [协议]://  [地址]  :[端口]
         "http": "http://10.144.1.10:8080",
-        "https": "https://10.144.1.10:8080",
+        "https": "http://10.144.1.10:8080",
     }
 else:
     proxies = None

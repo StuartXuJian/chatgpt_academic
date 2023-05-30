@@ -15,4 +15,6 @@ openai
 numpy
 arxiv
 pymupdf
+httpx
+rich
 urllib3==1.25.11
