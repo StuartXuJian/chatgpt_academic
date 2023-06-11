@@ -14,7 +14,8 @@ def main():
 
     from check_proxy import get_current_version
     initial_prompt = "Serve me as a writing and programming assistant."
-    title_html = f"<h1 align=\"center\">ChatGPT 工作利器 {get_current_version()}</h1><h3 align=\"center\" style=\"font-weight: bold; color: red;\">免责申明：请勿输入任何公司私有信息,<a href=\"https://web.yammer.com/main/org/nokia.com/threads/eyJfdHlwZSI6IlRocmVhZCIsImlkIjoiMjIyMjAyMDgwNDIxNDc4NCJ9\">参考yammer</a>,工具提供者不承担任何安全泄露责任</h3>"
+    title_html = f"<h1 align=\"center\">ChatGPT 工作利器 {get_current_version()}</h1>"
+    "<h3 align=\"center\" style=\"font-weight: bold; color: red;\">免责声明：请勿输入私有信息,工具不承担安全泄露责任</h3>"
     #description =  """代码开源和更新[地址🚀](https://github.com/binary-husky/chatgpt_academic)，感谢热情的[开发者们❤️](https://github.com/binary-husky/chatgpt_academic/graphs/contributors)"""
     description = "感谢开源社区"
 
@@ -55,7 +56,7 @@ def main():
     with gr.Blocks(title="ChatGPT工作利器", theme=set_theme, analytics_enabled=False, css=advanced_css) as demo:
         gr.HTML(title_html)
         cookies = gr.State({'api_key': API_KEY, 'llm_model': LLM_MODEL})
-        with gr.Tab("成品功能区"):
+        with gr.Tab("基本功能区"):
             with gr_L1():
                 with gr_L2(scale=2):
                     chatbot = gr.Chatbot(label=f"当前模型：{LLM_MODEL}")
@@ -63,12 +64,13 @@ def main():
                     history = gr.State([])
                 with gr_L2(scale=1):
                     with gr.Accordion("输入区", open=True) as area_input_primary:
-                        with gr.Row():
-                            gr.Markdown(r"[使用手册](https://confluence.ext.net.nokia.com/display/RCP/Working+tool+user+guide)")
+                        # with gr.Row():
+                        #     gr.Markdown(r"[使用手册](https://confluence.ext.net.nokia.com/display/RCP/Working+tool+user+guide)")
                         with gr.Row():
                             txt = gr.Textbox(show_label=False, placeholder="Input question here.").style(container=False)
                         with gr.Row():
                             submitBtn = gr.Button("提交", variant="primary")
+                            # submitBtnNew = gr.Button("测试", variant="primary")
                         with gr.Row():
                             resetBtn = gr.Button("重置", variant="secondary"); resetBtn.style(size="sm")
                             stopBtn = gr.Button("停止", variant="secondary"); stopBtn.style(size="sm")
@@ -120,7 +122,7 @@ def main():
                             resetBtn2 = gr.Button("重置", variant="secondary"); resetBtn2.style(size="sm")
                             stopBtn2 = gr.Button("停止", variant="secondary"); stopBtn2.style(size="sm")
                             clearBtn2 = gr.Button("清除", variant="secondary", visible=False); clearBtn2.style(size="sm")
-        with gr.Tab("强到没朋友的AI武器"): 
+        with gr.Tab("AI工具"): 
             from ai_tools import AI_Tool_list
             from ai_tools import generate_md_table
             with gr.Tab("通用"):
@@ -174,10 +176,13 @@ def main():
         input_combo = [cookies, max_length_sl, md_dropdown, txt, txt2, top_p, temperature, chatbot, history, system_prompt, plugin_advanced_arg]
         output_combo = [cookies, chatbot, history, status]
         predict_args = dict(fn=ArgsGeneralWrapper(predict), inputs=input_combo, outputs=output_combo)
+        from ToolsUsing import new_predict
+        predict_args_new = dict(fn=ArgsGeneralWrapper(new_predict), inputs=[*input_combo, gr.State(PORT)], outputs=output_combo)
         # 提交按钮、重置按钮
         cancel_handles.append(txt.submit(**predict_args))
         cancel_handles.append(txt2.submit(**predict_args))
         cancel_handles.append(submitBtn.click(**predict_args))
+        #cancel_handles.append(submitBtnNew.click(**predict_args_new))
         cancel_handles.append(submitBtn2.click(**predict_args))
         resetBtn.click(lambda: ([], [], "已重置"), None, [chatbot, history, status])
         resetBtn2.click(lambda: ([], [], "已重置"), None, [chatbot, history, status])

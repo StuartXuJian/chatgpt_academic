@@ -29,14 +29,6 @@ AI_Tool_list = {
                 "Stars": 4,  
                 "Others": ""
             },
-            {
-                "Name": "GitMind", 
-                "Link": "https://gitmind.cn/", 
-                "Brief_Usage": "国产思维导图生成器", 
-                "Charge": "需注册，收费使用。", 
-                "Stars": 1.5,  
-                "Others": ""
-            },
         ],
         "image": [
             {
