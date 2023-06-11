@@ -81,7 +81,7 @@ def main():
                     with gr.Accordion("基础功能区", open=True) as area_basic_fn:
                         with gr.Row():
                             for k in functional:
-                            if ("Visible" in functional[k]) and (not functional[k]["Visible"]): continue
+                                if ("Visible" in functional[k]) and (not functional[k]["Visible"]): continue
                                 variant = functional[k]["Color"] if "Color" in functional[k] else "secondary"
                                 functional[k]["Button"] = gr.Button(k, variant=variant)
                     with gr.Accordion("函数插件区", open=False) as area_crazy_fn:
