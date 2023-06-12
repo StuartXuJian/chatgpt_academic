@@ -55,14 +55,6 @@ AI_Tool_list = {
                 "Stars": 2.5,  
                 "Others": ""
             },
-            {
-                "Name": "文心一格", 
-                "Link": "https://yige.baidu.com/", 
-                "Brief_Usage": "文字生成图片, e.g. PPT插图", 
-                "Charge": "可以直接用百度账号。有限免费使用额度。", 
-                "Stars": 2.5,  
-                "Others": ""
-            },
         ],
          "doc": [
             {
