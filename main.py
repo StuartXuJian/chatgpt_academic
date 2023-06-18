@@ -71,7 +71,7 @@ def main():
                             txt = gr.Textbox(show_label=False, placeholder="Input question here.").style(container=False)
                         with gr.Row():
                             submitBtn = gr.Button("提交", variant="primary")
-                            # submitBtnNew = gr.Button("测试", variant="primary")
+                            submitBtnNew = gr.Button("测试", variant="primary")
                         with gr.Row():
                             resetBtn = gr.Button("重置", variant="secondary"); resetBtn.style(size="sm")
                             stopBtn = gr.Button("停止", variant="secondary"); stopBtn.style(size="sm")
@@ -184,7 +184,7 @@ def main():
         cancel_handles.append(txt.submit(**predict_args))
         cancel_handles.append(txt2.submit(**predict_args))
         cancel_handles.append(submitBtn.click(**predict_args))
-        #cancel_handles.append(submitBtnNew.click(**predict_args_new))
+        cancel_handles.append(submitBtnNew.click(**predict_args_new))
         cancel_handles.append(submitBtn2.click(**predict_args))
         resetBtn.click(lambda: ([], [], "已重置"), None, [chatbot, history, status])
         resetBtn2.click(lambda: ([], [], "已重置"), None, [chatbot, history, status])
