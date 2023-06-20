@@ -71,7 +71,7 @@ def main():
                             txt = gr.Textbox(show_label=False, placeholder="Input question here.").style(container=False)
                         with gr.Row():
                             submitBtn = gr.Button("提交", variant="primary")
-                            submitBtnNew = gr.Button("测试", variant="primary")
+                            submitBtnNew = gr.Button("进化版(测试中)", variant="primary")
                         with gr.Row():
                             resetBtn = gr.Button("重置", variant="secondary"); resetBtn.style(size="sm")
                             stopBtn = gr.Button("停止", variant="secondary"); stopBtn.style(size="sm")

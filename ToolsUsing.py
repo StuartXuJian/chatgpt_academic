@@ -81,7 +81,7 @@ def new_predict(txt, llm_kwargs, plugin_kwargs, chatbot, history, system_prompt,
     #api_base的问题再想办法解决
     #llm = OpenAI(temperature=1, openai_api_base=openai_endpoint, openai_api_key=select_api_key(llm_kwargs['api_key'], llm_kwargs['llm_model']), proxies=proxies, streaming=True, TIMEOUT_SECONDS=TIMEOUT_SECONDS)
     #llm_math = LLMMathChain.from_llm(llm, verbose=True)
-    langchain.debug = True
+    langchain.debug = False
     llm = ChatOpenAI(temperature=0, openai_api_base="https://api.chatanywhere.com.cn/v1", openai_api_key=select_api_key(llm_kwargs['api_key'], llm_kwargs['llm_model']), proxies=proxies)
     # result = llm([HumanMessage(content=txt)])
     # stream_response =  gpt_say.iter_lines()
@@ -109,7 +109,7 @@ def new_predict(txt, llm_kwargs, plugin_kwargs, chatbot, history, system_prompt,
     try:
         result = agent.run(txt)
     except Exception as e:
-        result = "对不起，我不知道。\n\n我目前能做的只有<简单的数学题> <>"
+        result = "对不起，我不知道。\n\n我目前能做的只有<简单的数学题> 和 <陪你聊聊天>"
 
     print(result)
     print(chatbot)
