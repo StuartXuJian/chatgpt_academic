@@ -16,25 +16,25 @@ from toolbox import get_conf, update_ui, is_any_api_key, select_api_key, what_ke
 proxies, API_KEY, TIMEOUT_SECONDS, MAX_RETRY = \
     get_conf('proxies', 'API_KEY', 'TIMEOUT_SECONDS', 'MAX_RETRY')
  
-
+import json
 from typing import Optional, Type
 from langchain.tools import BaseTool
 from langchain.callbacks.manager import AsyncCallbackManagerForToolRun, CallbackManagerForToolRun
 import requests
 class daily_news(BaseTool):
     name = "今日头条"
-    description = f"当你需要回答今日新闻相关的信息时非常有用; "\
-                "当问题中期望知道新闻,请直接基于我给你的data中随机选择一些新闻内容,用/<中文/>作为你的/<Final answer/>给我答案, 一条新闻一行。"\
-                "三个引号中是我期望你输出的格式的例子:\"\"\"1.新闻一；\n2.新闻二\n3.新闻三\"\"\""\
-                "不要在回答中带\<The randomly selected news articles are:/>这样的开头."\
-                "问题里没有需要总结时一定不要对内容进行总结."
+    description = f"""This tool is useful if you need to answer today's news and related information.
+                The output of this tool is today's news, and expect your request as action input.\n
+                当原始问题中期望了解新闻时, You should select at least 8 news and provide Final Answer directly immediately once you get news, in \"Chinese\".\n
+                Following in three double quotes is an examples of the desired output format, which requires each news to be followed by a new line in \"Chinese\":\n\n
+                \"\"\"今日头条：\n\n1. 新闻一；\n\n2. 今日发生xxx事件\n\n3. 研究表明\n\n4. 新闻四\n\n5. 新闻五\n\n..."\"\""""
     # return_direct = True
     
     def _run(self, query: str, run_manager: Optional[CallbackManagerForToolRun] = None) -> str:
         """Use the tool."""
         url= f"https://api.vvhan.com/api/60s?type=json"
         headers = {'Content-Type': 'text/json;charset=UTF-8',}
-        return requests.get(url, headers=headers).text[:2000]
+        return json.loads(requests.get(url, headers=headers).text)["data"]
 
     async def _arun(self, query: str, run_manager: Optional[AsyncCallbackManagerForToolRun] = None) -> str:
         """Use the tool asynchronously."""
@@ -104,15 +104,17 @@ def new_predict(txt, llm_kwargs, plugin_kwargs, chatbot, history, system_prompt,
     tools.append(daily_news())
     tools.append(chat_bot())
     
+    #agent的问题是，上下文太长，不能保持长久的上下文
     agent = initialize_agent(tools=tools, llm=llm, agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION, verbose=True)
 
     try:
         result = agent.run(txt)
     except Exception as e:
-        result = "对不起，我不知道。\n\n我目前能做的只有<简单的数学题> 和 <陪你聊聊天>"
+        result = "对不起，我不知道。\n\n我目前能做的只有:\n\n<简单的数学题>\n\n<给你讲今天的新闻>\n\n<陪你聊聊天>"
 
-    print(result)
-    print(chatbot)
+
+    # print(result)
+    # print(chatbot)
 
     history.append(result)
     chatbot[-1]=[history[-2], history[-1]]
