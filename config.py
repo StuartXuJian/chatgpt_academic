@@ -1,6 +1,7 @@
 # [step 1]>> 例如： API_KEY = "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" （此key无效）
 API_KEY = "sk-K2dwXy8hX5IHItiAZS1Ik7hNSEiGxR5AE2GTF71q9WffwSE4"    # 可同时填写多个API-KEY，用英文逗号分割，例如API_KEY = "sk-openaikey1,sk-openaikey2,fkxxxx-api2dkey1,fkxxxx-api2dkey2"
 
+
 # [step 2]>> 改为True应用代理，如果直接在海外服务器部署，此处不修改
 USE_PROXY = False
 if USE_PROXY:
@@ -46,7 +47,7 @@ MAX_RETRY = 2
 
 # 模型选择是 (注意: LLM_MODEL是默认选中的模型, 同时它必须被包含在AVAIL_LLM_MODELS切换列表中 )
 LLM_MODEL = "gpt-3.5-turbo" # 可选 ↓↓↓
-AVAIL_LLM_MODELS = ["gpt-3.5-turbo-16k", "gpt-3.5-turbo", "api2d-gpt-3.5-turbo", "gpt-4", "api2d-gpt-4", "chatglm", "moss", "newbing", "newbing-free", "stack-claude"]
+AVAIL_LLM_MODELS = ["gpt-3.5-turbo-16k", "gpt-3.5-turbo", "azure-gpt35", "api2d-gpt-3.5-turbo", "gpt-4", "api2d-gpt-4", "chatglm", "moss", "newbing", "newbing-free", "stack-claude"]
 # P.S. 其他可用的模型还包括 ["newbing-free", "jittorllms_rwkv", "jittorllms_pangualpha", "jittorllms_llama"]
 
 # 本地LLM模型如ChatGLM的执行方式 CPU/GPU
@@ -81,3 +82,10 @@ your bing cookies here
 # 如果需要使用Slack Claude，使用教程详情见 request_llm/README.md
 SLACK_CLAUDE_BOT_ID = ''   
 SLACK_CLAUDE_USER_TOKEN = ''
+
+
+# 如果需要使用AZURE 详情请见额外文档 docs\use_azure.md
+AZURE_ENDPOINT = "https://你的api名称.openai.azure.com/"
+AZURE_API_KEY = "填入azure openai api的密钥"
+AZURE_API_VERSION = "填入api版本"
+AZURE_ENGINE = "填入ENGINE"
