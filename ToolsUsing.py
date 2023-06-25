@@ -21,20 +21,29 @@ from typing import Optional, Type
 from langchain.tools import BaseTool
 from langchain.callbacks.manager import AsyncCallbackManagerForToolRun, CallbackManagerForToolRun
 import requests
+
 class daily_news(BaseTool):
     name = "今日头条"
     description = f"""This tool is useful if you need to answer today's news and related information.
-                The output of this tool is today's news, and expect your request as action input.\n
-                当原始问题中期望了解新闻时, You should select at least 8 news and provide Final Answer directly immediately once you get news, in \"Chinese\".\n
-                Following in three double quotes is an examples of the desired output format, which requires each news to be followed by a new line in \"Chinese\":\n\n
-                \"\"\"今日头条：\n\n1. 新闻一；\n\n2. 今日发生xxx事件\n\n3. 研究表明\n\n4. 新闻四\n\n5. 新闻五\n\n..."\"\""""
-    # return_direct = True
+                    当原始问题中不需要你对新闻做二次加工时, You should put all news as Final Answer directly without changing anything, in \"Chinese\".\n"""
+    return_direct = True
     
     def _run(self, query: str, run_manager: Optional[CallbackManagerForToolRun] = None) -> str:
         """Use the tool."""
         url= f"https://api.vvhan.com/api/60s?type=json"
         headers = {'Content-Type': 'text/json;charset=UTF-8',}
-        return json.loads(requests.get(url, headers=headers).text)["data"]
+        res = json.loads(requests.get(url, headers=headers).text)["data"]
+        res.pop() #扔掉最后一个微语，仅针对这个特定的API
+
+        #这段代码如果格式化更复杂，未来应该替换成chain
+        News = "今日头条: \n\n"
+        counts = 1
+        for item in res:
+            News += f"{counts}. "
+            News += item
+            News += "\n\n"
+            counts += 1
+        return News
 
     async def _arun(self, query: str, run_manager: Optional[AsyncCallbackManagerForToolRun] = None) -> str:
         """Use the tool asynchronously."""
@@ -50,6 +59,8 @@ class chat_bot(BaseTool):
     
     def _run(self, query: str, run_manager: Optional[CallbackManagerForToolRun] = None) -> str:
         """Use the tool."""
+        if query in ["None","N/A", "无"]:
+            raise NotImplementedError("AI answered {query}")
         return query
 
     async def _arun(self, query: str, run_manager: Optional[AsyncCallbackManagerForToolRun] = None) -> str:
@@ -81,36 +92,42 @@ def new_predict(txt, llm_kwargs, plugin_kwargs, chatbot, history, system_prompt,
     #api_base的问题再想办法解决
     #llm = OpenAI(temperature=1, openai_api_base=openai_endpoint, openai_api_key=select_api_key(llm_kwargs['api_key'], llm_kwargs['llm_model']), proxies=proxies, streaming=True, TIMEOUT_SECONDS=TIMEOUT_SECONDS)
     #llm_math = LLMMathChain.from_llm(llm, verbose=True)
-    langchain.debug = False
+    langchain.debug = True
     llm = ChatOpenAI(temperature=0, openai_api_base="https://api.chatanywhere.com.cn/v1", openai_api_key=select_api_key(llm_kwargs['api_key'], llm_kwargs['llm_model']), proxies=proxies)
     # result = llm([HumanMessage(content=txt)])
     # stream_response =  gpt_say.iter_lines()
 
-    # from langchain import OpenAI, LLMMathChain
-    # llm_math = LLMMathChain.from_llm(llm, verbose=True)
-    # result = llm_math.run("What is 13 raised to the .3432 power?")
-
-
-    #from langchain.agents.agent_toolkits import create_python_agent
-    # from langchain.tools.python.tool import PythonREPLTool
-    # from langchain.python import PythonREPL
+    # from langchain.utilities import PythonREPL
     from langchain.agents import initialize_agent
     from langchain.agents import load_tools
-    from langchain.agents import Tool
+    # from langchain.agents import Tool
     from langchain.agents import AgentType
-    from langchain import OpenAI, LLMMathChain
+    # from langchain import OpenAI, LLMMathChain
 
     tools = load_tools(["llm-math"], llm=llm)
     tools.append(daily_news())
     tools.append(chat_bot())
-    
+    # tools.append(
+    #     Tool(
+    #         name="python_repl",
+    #         description="A Python shell. Use this to execute python commands. Input should be a valid python command. If you want to see the output of a value, you should print it out with `print(...)`.",
+    #         func=PythonREPL().run
+    #     )
+    # )
+
+    from langchain.memory import ConversationBufferMemory
+    memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
+
     #agent的问题是，上下文太长，不能保持长久的上下文
-    agent = initialize_agent(tools=tools, llm=llm, agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION, verbose=True)
+    agent = initialize_agent(tools=tools, llm=llm, agent=AgentType.CHAT_CONVERSATIONAL_REACT_DESCRIPTION, verbose=True, memory=memory)
 
     try:
         result = agent.run(txt)
     except Exception as e:
-        result = "对不起，我不知道。\n\n我目前能做的只有:\n\n<简单的数学题>\n\n<给你讲今天的新闻>\n\n<陪你聊聊天>"
+        result = f"""对不起，是我资质平庸了。我目前能做的只有:\n\n\n
+                -简单的数学题;\n
+                -给你讲今天的新闻;\n
+                -陪你聊聊天;"""
 
 
     # print(result)
@@ -119,5 +136,4 @@ def new_predict(txt, llm_kwargs, plugin_kwargs, chatbot, history, system_prompt,
     history.append(result)
     chatbot[-1]=[history[-2], history[-1]]
     
-    # chatbot.append(("这是什么功能？", "[Local Message] 请注意，您正在调用一个[函数插件]的模板，该函数面向希望实现更多有趣功能的开发者，它可以作为创建新功能函数的模板（该函数只有20多行代码）。此外我们也提供可同步处理大量文件的多线程Demo供您参考。您若希望分享新的功能模组，请不吝PR！"))
     yield from update_ui(chatbot=chatbot, history=history) # 刷新界面
